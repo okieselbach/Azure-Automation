@@ -1,3 +1,18 @@
+<#
+Version: 1.0
+Author:  Oliver Kieselbach
+Runbook: Import-AutoPilotInfo
+
+Description:
+Get AutoPilot device information from Azure Blob Storage and import device to Intune 
+AutoPilot service via Intune API running from a Azure Automation runbook.
+Cleanup Blob Storage and send import notification to a Microsoft Teams channel.
+
+Release notes:
+Version 1.0: Original published version.
+
+The script is provided "AS IS" with no warranties.
+#>
 function Get-AuthToken {
 
     try {
