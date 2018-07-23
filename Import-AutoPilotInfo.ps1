@@ -13,6 +13,13 @@ Version 1.0: Original published version.
 
 The script is provided "AS IS" with no warranties.
 #>
+
+####################################################
+
+# Based on PowerShell Gallery WindowsAutoPilotIntune 
+# https://www.powershellgallery.com/packages/WindowsAutoPilotIntune
+# modified to support unattended authentication within a runbook
+
 function Get-AuthToken {
 
     try {
@@ -296,7 +303,7 @@ Function Import-AutoPilotCSV(){
         $global:errorList = @{}
 
         ForEach ($deviceStatus in $deviceStatuses) {
-            if ($($deviceStatus.state.deviceImportStatus) -eq 'success') {
+            if ($($deviceStatus.state.deviceImportStatus) -eq 'success' -or $($deviceStatus.state.deviceImportStatus) -eq 'complete') {
                 $global:successCount += 1
             } elseif ($($deviceStatus.state.deviceImportStatus) -eq 'error') {
                 $global:errorCount += 1
@@ -336,9 +343,10 @@ $TeamsWebhookUrl = Get-AutomationVariable -Name TeamsWebhookUrl
 
 ####################################################
 
-# slightly modified but based on:
-# Preventing Azure Automation Concurrent Jobs In the Runbook
+# Based on Preventing Azure Automation Concurrent Jobs In the Runbook
 # https://blog.tyang.org/2017/07/03/preventing-azure-automation-concurrent-jobs-in-the-runbook/
+# modified some outputs
+
 $CurrentJobId= $PSPrivateMetadata.JobId.Guid
 Write-Output "Current Job ID: '$CurrentJobId'"
 
