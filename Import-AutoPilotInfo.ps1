@@ -283,7 +283,7 @@ Function Import-AutoPilotCSV(){
             # Check to see if any devices are still processing (enhanced by check for pending)
             $processingCount = 0
             foreach ($device in $deviceStatuses){
-                if ($device.state.deviceImportStatus -eq "unknown" -or $device.state.deviceImportStatus -eq "pending") {
+                if ($($device.state.deviceImportStatus).ToLower() -eq "unknown" -or $($device.state.deviceImportStatus).ToLower() -eq "pending") {
                     $processingCount = $processingCount + 1
                 }
             }
