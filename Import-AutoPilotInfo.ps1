@@ -303,9 +303,9 @@ Function Import-AutoPilotCSV(){
         $global:errorList = @{}
 
         ForEach ($deviceStatus in $deviceStatuses) {
-            if ($($deviceStatus.state.deviceImportStatus) -eq 'success' -or $($deviceStatus.state.deviceImportStatus) -eq 'complete') {
+            if ($($deviceStatus.state.deviceImportStatus).ToLower() -eq 'success' -or $($deviceStatus.state.deviceImportStatus).ToLower() -eq 'complete') {
                 $global:successCount += 1
-            } elseif ($($deviceStatus.state.deviceImportStatus) -eq 'error') {
+            } elseif ($($deviceStatus.state.deviceImportStatus).ToLower() -eq 'error') {
                 $global:errorCount += 1
                 # ZtdDeviceAlreadyAssigned will be counted as soft error, free to delete
                 if ($($deviceStatus.state.deviceErrorCode) -eq 806) {
