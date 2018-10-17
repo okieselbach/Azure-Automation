@@ -326,6 +326,37 @@ Function Import-AutoPilotCSV(){
         }
 }
 
+Function Invoke-AutopilotSync(){
+[cmdletbinding()]
+param
+(
+)
+    # Defining Variables
+    $graphApiVersion = "beta"
+    $Resource = "deviceManagement/windowsAutopilotSettings/sync"
+
+    $uri = "https://graph.microsoft.com/$graphApiVersion/$Resource"
+    try {
+        $response = Invoke-RestMethod -Uri $uri -Headers $authToken -Method Post
+        $response.Value
+    }
+    catch {
+
+        $ex = $_.Exception
+        $errorResponse = $ex.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($errorResponse)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $responseBody = $reader.ReadToEnd();
+
+        Write-Host "Response content:`n$responseBody" -f Red
+        Write-Error "Request to $Uri failed with HTTP Status $($ex.Response.StatusCode) $($ex.Response.StatusDescription)"
+
+        break
+    }
+
+}
+
 
 ####################################################
 
@@ -455,6 +486,10 @@ if (Test-Path $CombinedOutput) {
             }
         }
     }
+
+    # Sync new devices to Intune
+    Write-output "Triggering Sync to Intune."
+    Invoke-AutopilotSync
 }
 else {
     Write-Output ""
@@ -546,3 +581,5 @@ If ($global:totalCount -ne 0) {
 
     Invoke-RestMethod -uri $uri -Method Post -body $jsonCode -ContentType 'application/json'
 }
+
+Write-Output "Finish"
