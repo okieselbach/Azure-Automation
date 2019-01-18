@@ -4,7 +4,7 @@ Author:  Oliver Kieselbach
 Script:  Cleanup-AutoPiloImportedDevices.ps1
 
 Description:
-In case something went wrong we can cleanup teh stating area of the AutoPilot import API.
+In case something went wrong we can cleanup the stating area of the AutoPilot import API.
 
 Release notes:
 Version 1.0: Original published version.
