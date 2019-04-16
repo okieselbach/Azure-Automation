@@ -265,7 +265,14 @@ Function Import-AutoPilotCSV(){
         [Parameter(Mandatory=$true)] $csvFile,
         [Parameter(Mandatory=$false)] $orderIdentifier = ""
     )
-    
+
+        $deviceStatusesInitial = Get-AutoPilotImportedDevice
+        $deviceCountInitial = $deviceStatusesInitial.Length
+        if ($deviceCountInitial -ge 175) {
+            Write-Output "Previous cleanup didn't work, stopping any further actions to prevent filling up Autopilot imported device space!"
+            Exit
+        }
+
         # Read CSV and process each device
         $devices = Import-CSV $csvFile
         foreach ($device in $devices) {
